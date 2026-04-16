@@ -111,9 +111,16 @@
                 </div>
 
                 <form class="contato-form">
-                    <input type="text" placeholder="Nome da Empresa" required>
-                    <input type="email" placeholder="E-mail Corporativo" required>
-                    <input type="tel" placeholder="Telefone/WhatsApp" required>
+                   <form class="contato-form">
+                     <div class="input-wrapper">
+                     <input type="text" placeholder="Nome da Empresa" required>
+                     </div>
+                    <div class="input-wrapper">
+                      <input type="email" placeholder="E-mail Corporativo" required>
+                      </div>
+                    <div class="input-wrapper">
+                      <input type="tel" placeholder="Número de Telefone" required>
+                      </div>
                     <select required>
                         <option value="" disabled selected>Tipo de Serviço</option>
                         <option value="carga">Carga e Descarga</option>
@@ -122,6 +129,7 @@
                     </select>
                     <textarea placeholder="Conte-nos sobre sua demanda (ex: volume de carga, local, horários)" rows="4"></textarea>
                     <button type="submit" class="btn-primary">Solicitar Orçamento Agora</button>
+                    </form>
                 </form>
             </div>
         </div>

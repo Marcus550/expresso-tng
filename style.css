@@ -344,3 +344,59 @@ body {
         text-align: center;
     }
 }
+
+/* Container que cria a borda animada */
+.input-wrapper {
+    position: relative;
+    padding: 2px; /* Espessura da "borda" */
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+}
+
+/* O brilho dourado que gira */
+.input-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 400%;
+    /* O gradiente dourado */
+    background: conic-gradient(
+        transparent, 
+        #FFD700, 
+        transparent 30%
+    );
+    top: -150%;
+    left: -25%;
+    animation: rotate 4s linear infinite;
+}
+
+/* Esconde a parte de dentro para parecer uma linha */
+.input-wrapper input, 
+.input-wrapper select, 
+.input-wrapper textarea {
+    position: relative;
+    width: 100%;
+    background: #1a1a1a !important; /* Mesma cor do fundo do card */
+    border: none !important; /* Remove a borda padrão */
+    z-index: 1;
+    margin: 0;
+}
+
+/* Animação de rotação */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Opcional: faz a linha brilhar mais quando clica no campo */
+.input-wrapper:focus-within::before {
+    background: conic-gradient(
+        transparent, 
+        #ffffff, 
+        #FFD700, 
+        transparent 50%
+    );
+    animation-duration: 2s; /* Gira mais rápido ao focar */
+}
