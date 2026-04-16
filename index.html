@@ -111,56 +111,32 @@
                 </div>
 
                 <form class="contato-form">
-                   <form class="contato-form">
-                     <div class="input-wrapper">
-                     <input type="text" placeholder="Nome da Empresa" required>
-                     </div>
-                    <div class="input-wrapper">
-                      <input type="email" placeholder="E-mail Corporativo" required>
-                      </div>
-                    <div class="input-wrapper">
-                      <input type="tel" placeholder="Número de Telefone" required>
-                      </div>
-                    <select required>
-                        <option value="" disabled selected>Tipo de Serviço</option>
-                        <option value="carga">Carga e Descarga</option>
-                        <option value="separacao">Separação/Estoque</option>
-                        <option value="completo">Suporte Logístico Completo</option>
-                    </select>
-                    <textarea placeholder="Conte-nos sobre sua demanda (ex: volume de carga, local, horários)" rows="4"></textarea>
-                    <button type="submit" class="btn-primary">Solicitar Orçamento Agora</button>
-                    </form>
-                </form>
+                 <div class="input-wrapper">
+                 <input type="text" id="nome_empresa" placeholder="Nome da Empresa" required>
+                 </div>
+                  <div class="input-wrapper">
+                  <input type="email" id="email" placeholder="E-mail Corporativo" required>
+                  </div>
+                   <div class="input-wrapper">
+                   <input type="tel" id="telefone" placeholder="Telefone/WhatsApp" required>
+                    </div>
+                  <div class="input-wrapper">
+                  <select id="servico" required>
+                       <option value="" disabled selected>Tipo de Serviço</option>
+                       <option value="Carga e Descarga">Carga e Descarga</option>
+                     <option value="Separação">Separação/Estoque</option>
+        </select>
+    </div>
+    <div class="input-wrapper">
+        <textarea id="mensagem" placeholder="Sua demanda..."></textarea>
+    </div>
+    <button type="submit" class="btn-primary">Solicitar Orçamento Agora</button>
+</form>
             </div>
         </div>
     </section>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const _supabase = supabase.createClient('https://apiznmmzyrxcpsephpre.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwaXpubW16eXJ4Y3BzZXBocHJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNzA1ODQsImV4cCI6MjA5MTk0NjU4NH0.jKgZuDlPeR3d_gCIQofAGz7dPU5g5BJ_xx4Ye_stnaw');
-
-    document.querySelector('.contato-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = e.target.querySelector('button');
-        btn.innerText = "Enviando...";
-
-        const { data, error } = await _supabase.from('orcamentos').insert([{
-            nome_empresa: e.target[0].value,
-            email: e.target[1].value,
-            telefone: e.target[2].value,
-            servico: e.target[3].value,
-            mensagem: e.target[4].value
-        }]);
-
-        if (error) {
-            alert("Erro ao enviar! Tente novamente.");
-            btn.innerText = "Solicitar Orçamento Agora";
-        } else {
-            alert("Orçamento enviado com sucesso!");
-            e.target.reset();
-            btn.innerText = "Solicitar Orçamento Agora";
-        }
-    });
-</script>
+<script src="script.js"></script>
 </html>
