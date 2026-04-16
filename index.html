@@ -136,4 +136,31 @@
     </section>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const _supabase = supabase.createClient('SUA_URL_AQUI', 'SUA_CHAVE_ANON_AQUI');
+
+    document.querySelector('.contato-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        btn.innerText = "Enviando...";
+
+        const { data, error } = await _supabase.from('orcamentos').insert([{
+            nome_empresa: e.target[0].value,
+            email: e.target[1].value,
+            telefone: e.target[2].value,
+            servico: e.target[3].value,
+            mensagem: e.target[4].value
+        }]);
+
+        if (error) {
+            alert("Erro ao enviar! Tente novamente.");
+            btn.innerText = "Solicitar Orçamento Agora";
+        } else {
+            alert("Orçamento enviado com sucesso!");
+            e.target.reset();
+            btn.innerText = "Solicitar Orçamento Agora";
+        }
+    });
+</script>
 </html>

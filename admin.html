@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Admin | Expresso TNG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-dark">
+    <div class="container" style="padding-top: 100px;">
+        <h1>Propostas Recebidas</h1>
+        <div id="lista-orcamentos" class="servicos-grid">
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const _supabase = supabase.createClient('SUA_URL_AQUI', 'SUA_CHAVE_ANON_AQUI');
+
+        async function carregarPropostas() {
+            const { data, error } = await _supabase
+                .from('orcamentos')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            const lista = document.getElementById('lista-orcamentos');
+            lista.innerHTML = data.map(o => `
+                <div class="vaga-card" style="flex-direction: column; align-items: flex-start;">
+                    <h3>${o.nome_empresa}</h3>
+                    <p><strong>Serviço:</strong> ${o.servico}</p>
+                    <p><strong>Contato:</strong> ${o.email} | ${o.telefone}</p>
+                    <p style="color: #a0a0a0;">${o.mensagem}</p>
+                </div>
+            `).join('');
+        }
+        carregarPropostas();
+    </script>
+</body>
+</html>
