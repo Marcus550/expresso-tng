@@ -2,10 +2,12 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expresso TNG | Logística Profissional</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -15,9 +17,13 @@
                 <img src="img/logo.png" alt="Expresso TNG">
                 <span>EXPRESSO <strong>TNG</strong></span>
             </div>
+            <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
             <ul class="nav-links">
                 <li><a href="#inicio">Início</a></li>
                 <li><a href="#vagas">Vagas</a></li>
+                <li><a href="#servicos">Serviços</a></li>
                 <li><a href="#contato" class="btn-primary">Orçamento</a></li>
             </ul>
         </div>
@@ -43,22 +49,41 @@
                 <p>Venha crescer com a Expresso TNG. Buscamos profissionais comprometidos.</p>
             </div>
 
-            <div class="vaga-card">
-                <div class="vaga-info">
-                    <h3>Auxiliar de Depósito / Carregamento</h3>
-                    <p class="local"><i class="fas fa-map-marker-alt"></i> Centro de Distribuição do BH</p>
-                    <div class="vaga-tags">
-                        <span>Carteira Assinada</span>
-                        <span>Início Imediato</span>
-                    </div>
-                    <ul class="vaga-details">
-                        <li><strong>Pagamento:</strong> R$ 70,00 / dia</li>
-                        <li><strong>Auxílios:</strong> Transporte + Alimentação</li>
-                        <li><strong>Total Diária:</strong> <span class="price">R$ 105,00</span></li>
-                    </ul>
+            <div class="vagas-home-actions">
+                <a href="vagas.html" class="btn-secondary">Ver todas as vagas</a>
+                <a href="https://wa.me/5531993618518?text=Ol%C3%A1!%20Tenho%20interesse%20em%20vagas%20na%20Expresso%20TNG.%20Podem%20me%20orientar%3F" class="btn-primary" target="_blank" rel="noopener noreferrer">
+                    Falar sobre vagas
+                </a>
+            </div>
+
+            <div id="lista-vagas-home" class="vagas-grid">
+                <div class="servico-card" style="text-align:center;">
+                    <p style="color:#aaa;">Carregando vagas...</p>
                 </div>
-                <div class="vaga-action">
-                    <a href="https://wa.me/+5531993618518" class="btn-primary">Enviar Currículo</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="metricas-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge">Confiabilidade</span>
+                <h2>Operação que entrega</h2>
+                <p>Time treinado, execução rápida e comunicação clara do início ao fim.</p>
+            </div>
+
+            <div class="metricas-grid">
+                <div class="metrica-card">
+                    <div class="metrica-num">24/7</div>
+                    <div class="metrica-txt">Disponibilidade operacional</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-num">SLA</div>
+                    <div class="metrica-txt">Foco em prazos e produtividade</div>
+                </div>
+                <div class="metrica-card">
+                    <div class="metrica-num">MG</div>
+                    <div class="metrica-txt">Atuação em Minas Gerais</div>
                 </div>
             </div>
         </div>
@@ -118,7 +143,7 @@
                   <input type="email" id="email" placeholder="E-mail Corporativo" required>
                   </div>
                    <div class="input-wrapper">
-                   <input type="tel" id="telefone" placeholder="Telefone/WhatsApp" required>
+                   <input type="tel" id="telefone" placeholder="Telefone/WhatsApp (com DDD)" required>
                     </div>
                   <div class="input-wrapper">
                   <select id="servico" required>
@@ -131,12 +156,24 @@
         <textarea id="mensagem" placeholder="Sua demanda..."></textarea>
     </div>
     <button type="submit" class="btn-primary">Solicitar Orçamento Agora</button>
+    <a id="cta-whats-comercial" class="btn-secondary" target="_blank" rel="noopener noreferrer" href="https://wa.me/5531993618518?text=Ol%C3%A1!%20Quero%20um%20or%C3%A7amento%20com%20a%20Expresso%20TNG.">
+        Ou falar no WhatsApp agora
+    </a>
 </form>
             </div>
         </div>
     </section>
 
+    <footer class="footer">
+    <div class="container">
+        <p>&copy; 2026 Expresso TNG - Todos os direitos reservados.</p>
+        <a href="login.html" class="admin-link">Acesso Restrito</a>
+    </div>
+</footer>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="supabaseClient.js"></script>
 <script src="script.js"></script>
 </html>

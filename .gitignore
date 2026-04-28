@@ -1,0 +1,15 @@
+# Secrets / env (não versionar)
+.env
+.env.*
+config.js
+secrets.*
+credentials.*
+*.pem
+*.key
+*.crt
+
+# Editor/OS
+.vscode/
+.DS_Store
+Thumbs.db
+

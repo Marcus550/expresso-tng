@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin | Expresso TNG</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="admin-login-body">
+
+    <div class="login-container">
+        <div class="login-brand">
+            <div class="logo">
+                <span>EXPRESSO <strong>TNG</strong></span>
+            </div>
+            <h1>Painel de <br><span class="highlight">Controle</span></h1>
+            <p>Gerencie orçamentos e demandas operacionais em tempo real.</p>
+        </div>
+
+        <div class="login-card">
+            <span class="badge">Acesso Restrito</span>
+            <form id="login-form" class="contato-form">
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="E-mail" autocomplete="username" required>
+                </div>
+                <div class="input-wrapper">
+                    <input type="password" id="pass" placeholder="Senha" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="btn-primary">Entrar no Sistema</button>
+            </form>
+            <p id="erro-login" class="error-msg">Não foi possível entrar.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="supabaseClient.js"></script>
+    <script>
+        const form = document.getElementById('login-form');
+        const erro = document.getElementById('erro-login');
+
+        function showErro(msg) {
+            erro.textContent = msg;
+            erro.style.display = 'block';
+        }
+
+        function lerErroDaUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const tipo = params.get('erro');
+            const detalhe = params.get('detalhe');
+            if (!tipo) return;
+
+            if (tipo === 'nao_admin') {
+                showErro('Seu usuário não está liberado como admin. Peça para adicionarem seu user_id na tabela admin_users.');
+                return;
+            }
+            if (tipo === 'permissao') {
+                showErro(`Admin ainda não configurado no Supabase (RLS/políticas). Detalhe: ${detalhe ? decodeURIComponent(detalhe) : 'sem detalhe'}`);
+                return;
+            }
+        }
+
+        async function irParaAdminSeLogado() {
+            const { data } = await window._supabase.auth.getSession();
+            if (data?.session) window.location.href = "admin.html";
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lerErroDaUrl();
+            irParaAdminSeLogado();
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            erro.style.display = 'none';
+
+            const email = document.getElementById('email').value.trim();
+            const pass = document.getElementById('pass').value;
+            const btn = form.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = 'Entrando...';
+
+            const { error } = await window._supabase.auth.signInWithPassword({ email, password: pass });
+
+            if (error) {
+                showErro('E-mail ou senha inválidos.');
+                erro.classList.add('shake');
+                setTimeout(() => erro.classList.remove('shake'), 500);
+                btn.disabled = false;
+                btn.innerText = 'Entrar no Sistema';
+                return;
+            }
+
+            window.location.href = "admin.html";
+        });
+    </script>
+</body>
+</html>

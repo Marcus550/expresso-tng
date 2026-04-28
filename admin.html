@@ -2,37 +2,136 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Admin | Expresso TNG</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-dark">
-    <div class="container" style="padding-top: 100px;">
-        <h1>Propostas Recebidas</h1>
-        <div id="lista-orcamentos" class="servicos-grid">
+<body style="background: #0a0a0a;">
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span>PAINEL <strong>ADMIN</strong></span>
             </div>
+            <div style="display:flex; gap:16px; align-items:center;">
+                <button onclick="fazerLogoff()" style="background:none; border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 14px; border-radius:10px; cursor:pointer;">
+                    <i class="fas fa-right-from-bracket"></i> Sair
+                </button>
+                <a href="index.html" style="color: #FFD700; text-decoration: none;"><i class="fas fa-arrow-left"></i> Voltar ao Site</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container admin-main" style="padding-top: 120px;">
+        <header class="admin-header">
+            <div class="admin-title">
+                <span class="badge">Admin</span>
+                <h2 id="admin-title">Painel de Orçamentos</h2>
+                <p id="admin-subtitle">Acompanhe solicitações em tempo real, filtre e responda rápido.</p>
+            </div>
+
+            <div class="admin-kpis">
+                <div class="admin-kpi">
+                    <div class="kpi-label">Total</div>
+                    <div class="kpi-value" id="kpi-total">—</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="kpi-label">Hoje</div>
+                    <div class="kpi-value" id="kpi-hoje">—</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="kpi-label">Últimos 7 dias</div>
+                    <div class="kpi-value" id="kpi-7d">—</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="admin-toolbar">
+            <div class="admin-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="busca" type="text" placeholder="Buscar por empresa, e-mail, telefone ou serviço..." />
+            </div>
+
+            <div class="admin-filters">
+                <small id="admin-last-update" style="color:#666; margin-right: 6px;">Atualizado: —</small>
+                <select id="filtro-status">
+                    <option value="">Todos os status</option>
+                    <option value="novo">Novo</option>
+                    <option value="aceito">Aceito</option>
+                    <option value="ignorado">Ignorado</option>
+                    <option value="bloqueado">Bloqueado</option>
+                </select>
+                <select id="filtro-servico">
+                    <option value="">Todos os serviços</option>
+                </select>
+                <button id="btn-recarregar" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-rotate"></i> Recarregar
+                </button>
+            </div>
+        </section>
+
+        <section class="admin-content">
+            <div id="lista-orcamentos" class="admin-list">
+                <div class="admin-empty">
+                    <p style="color:#666;">Carregando propostas...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="admin-modal" class="admin-modal" aria-hidden="true">
+        <div class="admin-modal-card">
+            <div class="admin-modal-head">
+                <div>
+                    <div class="admin-modal-title" id="modal-empresa">—</div>
+                    <div class="admin-modal-sub" id="modal-servico">—</div>
+                </div>
+                <button class="admin-icon-btn" id="modal-fechar" aria-label="Fechar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="admin-modal-body">
+                <div class="admin-modal-row">
+                    <div class="admin-field">
+                        <div class="admin-field-label">E-mail</div>
+                        <div class="admin-field-value" id="modal-email">—</div>
+                    </div>
+                    <button class="admin-mini-btn" id="modal-copiar-email"><i class="fa-regular fa-copy"></i> Copiar</button>
+                </div>
+
+                <div class="admin-modal-row">
+                    <div class="admin-field">
+                        <div class="admin-field-label">WhatsApp</div>
+                        <div class="admin-field-value" id="modal-tel">—</div>
+                    </div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+                        <button class="admin-mini-btn" id="modal-copiar-tel"><i class="fa-regular fa-copy"></i> Copiar</button>
+                        <a class="btn-primary" id="modal-whats" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-whatsapp"></i> Responder
+                        </a>
+                    </div>
+                </div>
+
+                <div class="admin-field" style="margin-top: 14px;">
+                    <div class="admin-field-label">Mensagem</div>
+                    <div class="admin-message" id="modal-msg">—</div>
+                </div>
+
+                <div class="admin-field" style="margin-top: 14px;">
+                    <div class="admin-field-label">Recebido em</div>
+                    <div class="admin-field-value" id="modal-data">—</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        const _supabase = supabase.createClient('https://apiznmmzyrxcpsephpre.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwaXpubW16eXJ4Y3BzZXBocHJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzNzA1ODQsImV4cCI6MjA5MTk0NjU4NH0.jKgZuDlPeR3d_gCIQofAGz7dPU5g5BJ_xx4Ye_stnaw');
-
-        async function carregarPropostas() {
-            const { data, error } = await _supabase
-                .from('orcamentos')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            const lista = document.getElementById('lista-orcamentos');
-            lista.innerHTML = data.map(o => `
-                <div class="vaga-card" style="flex-direction: column; align-items: flex-start;">
-                    <h3>${o.nome_empresa}</h3>
-                    <p><strong>Serviço:</strong> ${o.servico}</p>
-                    <p><strong>Contato:</strong> ${o.email} | ${o.telefone}</p>
-                    <p style="color: #a0a0a0;">${o.mensagem}</p>
-                </div>
-            `).join('');
-        }
-        carregarPropostas();
-    </script>
+    <script src="config.js"></script>
+    <script src="supabaseClient.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
